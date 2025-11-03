@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify"
-import { getAllLists } from "./controller/listsController.js"
+import { getRandomCountries } from "./controller/countriesController.js"
 
 export async function registerRoutes(app: FastifyInstance) {
 
@@ -7,11 +7,5 @@ export async function registerRoutes(app: FastifyInstance) {
     return { hello: 'world' }
     })
 
-    app.get('/lists', getAllLists)
-
-    app.get('/teste', getTeste)
-
-    async function getTeste(){
-        return { hello: 'teste' }
-    }
+    app.get('/game', getRandomCountries)
 }
