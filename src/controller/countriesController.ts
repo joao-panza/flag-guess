@@ -1,5 +1,5 @@
-import { getNamesAndFlags } from '../services/countriesService.js'
+import { selectFourRandomCountries } from '../services/countriesService.js'
 
 export async function getRandomCountries(){
-    return getNamesAndFlags()
+    return selectFourRandomCountries()
 }
