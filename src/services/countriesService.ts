@@ -1,9 +1,15 @@
-let firstOption 
-let secondOption 
-let thirdOption 
-let forthOption
 let numberOfOptions = 4
-let randomNumberArray: any = []
+
+interface Country{
+    translations?: {
+        por?: {
+            common?: string
+        }
+    }
+    flags: {
+        png: string
+    }
+}
 
 async function getAllCountries(){
     let response = await fetch('https://restcountries.com/v3.1/all?fields=translations,flags')
@@ -13,32 +19,34 @@ async function getAllCountries(){
 
 async function getNamesAndFlags(){
     let countries = await getAllCountries()
-    countries = countries.map(country => ({
+    countries = countries.map((country: Country) => ({
         name: country.translations?.por?.common,
         flag: country.flags.png
     }))
     return countries
 }
 
-export async function selectFourRandomCountries(){
+async function selectRandomCountries(){
     let selectedCountries = await getNamesAndFlags()
-
+    let options: any = []
     for(let i=0; i<numberOfOptions; i++){
         let randomNumber = Math.floor(Math.random() * (selectedCountries.length - 0 + 1)) + 1
-        randomNumberArray[i] = randomNumber
+        options.push(selectedCountries[randomNumber])
     }
+    return options
+}
 
-    firstOption = selectedCountries[randomNumberArray[0]]
-    secondOption = selectedCountries[randomNumberArray[1]]
-    thirdOption = selectedCountries[randomNumberArray[2]]
-    forthOption = selectedCountries[randomNumberArray[3]]
-
-    let options
-
-    return options = {
-        firstOption,
-        secondOption,
-        thirdOption,
-        forthOption
+export async function getOptions(){
+    let selectedCountries = await selectRandomCountries()
+    let rightAnswerFlag = selectedCountries[0].flag
+    let rightAnswer = selectedCountries[0].name
+    let wrongAnswers = []
+    for(let i=1;i<numberOfOptions; i++){
+        wrongAnswers.push(selectedCountries[i])
+    }
+    return {
+        rightAnswerFlag,
+        rightAnswer,
+        wrongAnswers
     }
 }
